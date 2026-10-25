@@ -1,0 +1,51 @@
+// 学習用フレーズデータ。meaning は学習者の母語側の訳（日本語学習時は英語訳）。
+window.LANGS = {
+  en: { name: "英語", flag: "🇺🇸", locale: "en-US", meaningLabel: "日本語訳" },
+  ko: { name: "韓国語", flag: "🇰🇷", locale: "ko-KR", meaningLabel: "日本語訳" },
+  ja: { name: "日本語", flag: "🇯🇵", locale: "ja-JP", meaningLabel: "English" },
+};
+
+window.PHRASES = {
+  en: [
+    { cat: "あいさつ", text: "Good morning.", meaning: "おはようございます。" },
+    { cat: "あいさつ", text: "Nice to meet you.", meaning: "はじめまして。" },
+    { cat: "あいさつ", text: "How are you doing?", meaning: "調子はどうですか？" },
+    { cat: "あいさつ", text: "See you tomorrow.", meaning: "また明日。" },
+    { cat: "旅行", text: "Where is the station?", meaning: "駅はどこですか？" },
+    { cat: "旅行", text: "How much is this?", meaning: "これはいくらですか？" },
+    { cat: "旅行", text: "Can I have the check, please?", meaning: "お会計をお願いします。" },
+    { cat: "旅行", text: "I'd like to check in.", meaning: "チェックインしたいです。" },
+    { cat: "日常", text: "Could you say that again?", meaning: "もう一度言っていただけますか？" },
+    { cat: "日常", text: "I'm learning English.", meaning: "英語を勉強しています。" },
+    { cat: "日常", text: "What time is it now?", meaning: "今何時ですか？" },
+    { cat: "日常", text: "Thank you for your help.", meaning: "手伝ってくれてありがとう。" },
+  ],
+  ko: [
+    { cat: "あいさつ", text: "안녕하세요.", meaning: "こんにちは。" },
+    { cat: "あいさつ", text: "만나서 반갑습니다.", meaning: "お会いできてうれしいです。" },
+    { cat: "あいさつ", text: "감사합니다.", meaning: "ありがとうございます。" },
+    { cat: "あいさつ", text: "안녕히 계세요.", meaning: "さようなら（残る人へ）。" },
+    { cat: "旅行", text: "역이 어디예요?", meaning: "駅はどこですか？" },
+    { cat: "旅行", text: "이거 얼마예요?", meaning: "これはいくらですか？" },
+    { cat: "旅行", text: "계산해 주세요.", meaning: "お会計をお願いします。" },
+    { cat: "旅行", text: "물 좀 주세요.", meaning: "お水をください。" },
+    { cat: "日常", text: "다시 한번 말해 주세요.", meaning: "もう一度言ってください。" },
+    { cat: "日常", text: "한국어를 공부하고 있어요.", meaning: "韓国語を勉強しています。" },
+    { cat: "日常", text: "지금 몇 시예요?", meaning: "今何時ですか？" },
+    { cat: "日常", text: "잘 모르겠어요.", meaning: "よくわかりません。" },
+  ],
+  ja: [
+    { cat: "あいさつ", text: "おはようございます。", meaning: "Good morning." },
+    { cat: "あいさつ", text: "はじめまして。", meaning: "Nice to meet you." },
+    { cat: "あいさつ", text: "よろしくお願いします。", meaning: "I look forward to working with you." },
+    { cat: "あいさつ", text: "また明日。", meaning: "See you tomorrow." },
+    { cat: "旅行", text: "駅はどこですか？", meaning: "Where is the station?" },
+    { cat: "旅行", text: "これはいくらですか？", meaning: "How much is this?" },
+    { cat: "旅行", text: "お会計をお願いします。", meaning: "Can I have the check, please?" },
+    { cat: "旅行", text: "トイレはどこですか？", meaning: "Where is the restroom?" },
+    { cat: "日常", text: "もう一度言ってください。", meaning: "Please say that again." },
+    { cat: "日常", text: "日本語を勉強しています。", meaning: "I'm studying Japanese." },
+    { cat: "日常", text: "今何時ですか？", meaning: "What time is it now?" },
+    { cat: "日常", text: "ありがとうございました。", meaning: "Thank you very much." },
+  ],
+};
