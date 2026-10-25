@@ -6,17 +6,19 @@
 
   const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
   const ROUND_SIZE = 5;
-  const state = { lang: null, rate: 1, cat: null };
+  const state = { lang: null, rate: 1, scene: null };
 
   // ---------- 保存 ----------
   const store = {
     get() {
       try { return JSON.parse(localStorage.getItem("lingo-stats") || "{}"); } catch { return {}; }
     },
-    add(lang, mode, score) {
+    // 記録は 言語 → 場面（全場面ミックスは "all"）→ モード ごとに持つ
+    add(lang, scene, mode, score) {
       const s = this.get();
-      s[lang] = s[lang] || {};
-      const m = (s[lang][mode] = s[lang][mode] || { count: 0, total: 0 });
+      const byScene = (s[lang] = s[lang] || {});
+      const sc = (byScene[scene] = byScene[scene] || {});
+      const m = (sc[mode] = sc[mode] || { count: 0, total: 0 });
       m.count += 1;
       m.total += score;
       try { localStorage.setItem("lingo-stats", JSON.stringify(s)); } catch {}
@@ -103,8 +105,17 @@
     for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
     return a;
   };
-  // 選択中のカテゴリのフレーズ（未選択なら全部）
-  const pool = () => PHRASES[state.lang].filter((p) => !state.cat || p.cat === state.cat);
+  // 選択中の場面のフレーズ（全場面ミックスなら全部）
+  const pool = () => PHRASES[state.lang].filter((p) => !state.scene || p.scene === state.scene);
+  const sceneKey = () => state.scene || "all";
+  const sceneOf = (id) => SCENES.find((s) => s.id === id);
+  const sceneTitle = () => (state.scene ? `${sceneOf(state.scene).emoji} ${sceneOf(state.scene).name}` : "🔀 全場面ミックス");
+  function sceneStats(scene) {
+    const sc = (store.get()[state.lang] || {})[scene] || {};
+    const ms = Object.values(sc).filter((m) => m && m.count);
+    const count = ms.reduce((a, m) => a + m.count, 0);
+    return count ? { count, avg: Math.round(ms.reduce((a, m) => a + m.total, 0) / count) } : null;
+  }
   const newRound = () => shuffle(pool()).slice(0, ROUND_SIZE);
   const scoreClass = (s) => (s >= 80 ? "good" : s >= 50 ? "mid" : "bad");
 
@@ -148,31 +159,39 @@
       const b = document.createElement("button");
       b.className = "big-btn";
       b.innerHTML = `<span class="emoji">${l.flag}</span><span>${l.name}<small>${PHRASES[code].length} フレーズ</small></span>`;
-      b.onclick = () => { state.lang = code; state.cat = null; go(menuScreen); };
+      b.onclick = () => { state.lang = code; go(sceneScreen); };
+      grid.appendChild(b);
+    });
+  }
+
+  function sceneScreen() {
+    const l = LANGS[state.lang];
+    setHeader(`${l.flag} ${l.name}`, homeScreen);
+    app.innerHTML = `<p class="muted">練習したい場面を選んでください</p><div class="grid"></div>`;
+    const grid = app.querySelector(".grid");
+    [...SCENES, { id: null, emoji: "🔀", name: "全場面ミックス", desc: "すべての場面からランダムに出題" }].forEach((sc) => {
+      const n = PHRASES[state.lang].filter((p) => !sc.id || p.scene === sc.id).length;
+      if (!n) return;
+      const st = sceneStats(sc.id || "all");
+      const b = document.createElement("button");
+      b.className = "big-btn";
+      b.innerHTML = `<span class="emoji">${sc.emoji}</span><span>${esc(sc.name)}<small>${esc(sc.desc)}<br>${n} フレーズ・${st ? `平均 ${st.avg} 点` : "まだ記録なし"}</small></span>`;
+      b.onclick = () => { state.scene = sc.id; go(menuScreen); };
       grid.appendChild(b);
     });
   }
 
   function menuScreen() {
-    const l = LANGS[state.lang];
-    setHeader(`${l.flag} ${l.name}`, homeScreen);
-    const stats = store.get()[state.lang] || {};
+    setHeader(sceneTitle(), sceneScreen);
+    const stats = (store.get()[state.lang] || {})[sceneKey()] || {};
     const avg = (m) => (stats[m] ? `平均 ${Math.round(stats[m].total / stats[m].count)} 点・${stats[m].count} 回` : "まだ記録なし");
-    app.innerHTML = `<p class="label">カテゴリ</p><div class="speed cats"></div><div class="grid" style="margin-top:14px"></div>`;
-    const cats = app.querySelector(".cats");
-    [null, ...new Set(PHRASES[state.lang].map((p) => p.cat))].forEach((c) => {
-      const b = document.createElement("button");
-      b.textContent = c || "すべて";
-      if (state.cat === c) b.className = "on";
-      b.onclick = () => { state.cat = c; menuScreen(); };
-      cats.appendChild(b);
-    });
+    app.innerHTML = `<div class="grid"></div>`;
     const grid = app.querySelector(".grid");
     const modes = [
       { key: "listen", emoji: "🎧", name: "リスニング：意味を選ぶ", desc: "音声を聞いて正しい意味を選択", fn: listenQuiz },
       { key: "dictation", emoji: "✍️", name: "リスニング：書き取り", desc: "聞こえた文を入力", fn: dictation },
       { key: "speak", emoji: "🗣️", name: "スピーキング：発音練習", desc: "お手本を聞いて声に出す", fn: speaking },
-      { key: "phrases", emoji: "📖", name: "フレーズ一覧", desc: "全フレーズを聞いて確認", fn: phraseList },
+      { key: "phrases", emoji: "📖", name: "フレーズ一覧", desc: "この場面のフレーズを聞いて確認", fn: phraseList },
     ];
     modes.forEach((m) => {
       const b = document.createElement("button");
@@ -192,7 +211,9 @@
     if (i >= round.length) return go(resultScreen, "listen", scores);
     setHeader(`🎧 ${i + 1} / ${round.length}`, menuScreen);
     const p = round[i];
-    const others = shuffle(PHRASES[state.lang].filter((x) => x !== p && x.meaning !== p.meaning)).slice(0, 3);
+    // 誤答の選択肢は同じ場面から優先して選ぶ（足りなければ他の場面から）
+    const cands = PHRASES[state.lang].filter((x) => x !== p && x.meaning !== p.meaning);
+    const others = [...shuffle(cands.filter((x) => x.scene === p.scene)), ...shuffle(cands.filter((x) => x.scene !== p.scene))].slice(0, 3);
     const choices = shuffle([p, ...others]);
     app.innerHTML = `${progressBar(i)}
       <div class="card center">
@@ -321,12 +342,13 @@
     app.innerHTML = `<div id="speed"></div><div id="list" style="margin-top:12px"></div>`;
     app.querySelector("#speed").appendChild(speedControl());
     const list = app.querySelector("#list");
-    const byCat = {};
-    pool().forEach((p) => (byCat[p.cat] = byCat[p.cat] || []).push(p));
-    Object.entries(byCat).forEach(([cat, ps]) => {
+    const byScene = {};
+    pool().forEach((p) => (byScene[p.scene] = byScene[p.scene] || []).push(p));
+    Object.entries(byScene).forEach(([id, ps]) => {
+      const sc = sceneOf(id);
       const card = document.createElement("div");
       card.className = "card";
-      card.innerHTML = `<p class="label">${esc(cat)}</p>`;
+      card.innerHTML = `<p class="label">${sc ? `${sc.emoji} ${esc(sc.name)}` : esc(id)}</p>`;
       ps.forEach((p) => {
         const b = document.createElement("button");
         b.className = "choice";
@@ -342,7 +364,7 @@
   function resultScreen(mode, scores) {
     setHeader("結果", menuScreen);
     const avg = scores.length ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
-    if (scores.length) store.add(state.lang, mode, avg);
+    if (scores.length) store.add(state.lang, sceneKey(), mode, avg);
     const msg = avg >= 80 ? "すばらしい！" : avg >= 50 ? "いい調子です" : "繰り返し練習しましょう";
     app.innerHTML = `
       <div class="card center">
