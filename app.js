@@ -167,8 +167,10 @@
   function sceneScreen() {
     const l = LANGS[state.lang];
     setHeader(`${l.flag} ${l.name}`, homeScreen);
-    app.innerHTML = `<p class="muted">練習したい場面を選んでください</p><div class="grid"></div>`;
-    const grid = app.querySelector(".grid");
+    app.innerHTML = `<div class="grid"><button class="big-btn" id="letters"><span class="emoji">🔤</span><span>文字と読み方<small>${esc(LETTERS[state.lang].map((t) => t.title).slice(0, 3).join("・"))} など。タップで発音を確認</small></span></button></div>
+      <p class="muted">練習したい場面を選んでください</p><div class="grid" id="scenes"></div>`;
+    app.querySelector("#letters").onclick = () => go(lettersScreen);
+    const grid = app.querySelector("#scenes");
     [...SCENES, { id: null, emoji: "🔀", name: "全場面ミックス", desc: "すべての場面からランダムに出題" }].forEach((sc) => {
       const n = PHRASES[state.lang].filter((p) => !sc.id || p.scene === sc.id).length;
       if (!n) return;
@@ -335,6 +337,35 @@
       if (best !== null) scores.push(best);
       go(speaking, round, i + 1, scores);
     };
+  }
+
+  // 文字と読み方の資料。タイルをタップすると読み上げる
+  function lettersScreen() {
+    setHeader("🔤 文字と読み方", sceneScreen);
+    app.innerHTML = `<div id="speed"></div><div id="tables" style="margin-top:12px"></div>`;
+    app.querySelector("#speed").appendChild(speedControl());
+    const box = app.querySelector("#tables");
+    LETTERS[state.lang].forEach((t) => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `<p class="phrase" style="font-size:19px">${esc(t.title)}</p><p class="meaning">${esc(t.note)}</p>`;
+      const grid = document.createElement("div");
+      grid.className = "letter-grid";
+      grid.style.gridTemplateColumns = `repeat(${t.cols}, 1fr)`;
+      t.items.forEach((it) => {
+        if (!it.c) {
+          grid.appendChild(document.createElement("span"));
+          return;
+        }
+        const b = document.createElement("button");
+        b.className = "letter";
+        b.innerHTML = `<span class="ch">${esc(it.c)}</span><span class="rd">${esc(it.r)}</span>${it.sub ? `<span class="sb">${esc(it.sub)}</span>` : ""}`;
+        b.onclick = () => speak(it.say);
+        grid.appendChild(b);
+      });
+      card.appendChild(grid);
+      box.appendChild(card);
+    });
   }
 
   function phraseList() {
