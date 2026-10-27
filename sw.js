@@ -1,4 +1,4 @@
-const CACHE = "lingo-v4";
+const CACHE = "lingo-v5";
 const FILES = ["./", "index.html", "style.css", "app.js", "data.js", "letters.js", "manifest.webmanifest", "icon.svg"];
 self.addEventListener("install", (e) => e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES))));
 self.addEventListener("activate", (e) =>

@@ -117,6 +117,8 @@
     return count ? { count, avg: Math.round(ms.reduce((a, m) => a + m.total, 0) / count) } : null;
   }
   const newRound = () => shuffle(pool()).slice(0, ROUND_SIZE);
+  // 慣用句の直訳など、フレーズの補足（note があるときだけ表示）
+  const noteHtml = (p, attrs = "") => (p.note ? `<p class="note"${attrs}>${esc(p.note)}</p>` : "");
   const scoreClass = (s) => (s >= 80 ? "good" : s >= 50 ? "mid" : "bad");
 
   function go(screen, ...args) {
@@ -223,6 +225,7 @@
         <div class="row"><button class="btn" id="play">▶ 再生</button></div>
         <div id="speed"></div>
         <p class="phrase" id="reveal" hidden>${esc(p.text)}</p>
+        ${noteHtml(p, ' id="reveal-note" hidden')}
       </div>
       <div class="grid" id="choices"></div>
       <div class="row" style="margin-top:14px"><button class="btn" id="next" hidden>次へ</button></div>`;
@@ -240,6 +243,7 @@
         b.classList.add(correct ? "correct" : "wrong");
         box.children[choices.indexOf(p)].classList.add("correct");
         app.querySelector("#reveal").hidden = false;
+        if (p.note) app.querySelector("#reveal-note").hidden = false;
         app.querySelector("#next").hidden = false;
         scores.push(correct ? 100 : 0);
       };
@@ -277,7 +281,8 @@
       app.querySelector("#fb").innerHTML = `
         <p class="score ${scoreClass(s)}">${s}点</p>
         <p class="phrase diff">${diffHtml(p.text, said)}</p>
-        <p class="meaning">${esc(p.meaning)}</p>`;
+        <p class="meaning">${esc(p.meaning)}</p>
+        ${noteHtml(p)}`;
     };
     setTimeout(() => speak(p.text), 300);
   }
@@ -290,6 +295,7 @@
       <div class="card center">
         <p class="phrase">${esc(p.text)}</p>
         <p class="meaning">${esc(p.meaning)}</p>
+        ${noteHtml(p)}
         <div class="row" style="margin-top:10px"><button class="btn secondary" id="play">▶ お手本</button></div>
         <div id="speed"></div>
       </div>
@@ -384,7 +390,7 @@
         const b = document.createElement("button");
         b.className = "choice";
         b.style.marginTop = "8px";
-        b.innerHTML = `🔊 <b>${esc(p.text)}</b><br><span class="meaning">${esc(p.meaning)}</span>`;
+        b.innerHTML = `🔊 <b>${esc(p.text)}</b><br><span class="meaning">${esc(p.meaning)}</span>${p.note ? `<br><span class="note">${esc(p.note)}</span>` : ""}`;
         b.onclick = () => speak(p.text);
         card.appendChild(b);
       });
