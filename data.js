@@ -1,5 +1,6 @@
 // 学習用フレーズデータ。meaning は学習者の母語側の訳（日本語学習時は英語訳）。
 // フレーズを増やすときは、該当する言語の配列に { scene, text, meaning } を1行追加する。
+// 慣用句などは note に直訳を入れると、意味の下に表示される。
 window.LANGS = {
   en: { name: "英語", flag: "🇺🇸", locale: "en-US", meaningLabel: "日本語訳" },
   ko: { name: "韓国語", flag: "🇰🇷", locale: "ko-KR", meaningLabel: "日本語訳" },
@@ -15,6 +16,7 @@ window.SCENES = [
   { id: "transport", emoji: "🚃", name: "電車・タクシー", desc: "乗り物を使うとき" },
   { id: "hotel", emoji: "🏨", name: "ホテル", desc: "チェックインや要望を伝えるとき" },
   { id: "help", emoji: "🆘", name: "困ったとき", desc: "聞き返す・助けを求めるとき" },
+  { id: "idioms", emoji: "💬", name: "慣用句", desc: "その国でよく使われる言い回し" },
 ];
 
 window.PHRASES = {
@@ -81,6 +83,17 @@ window.PHRASES = {
     { scene: "help", text: "Please call the police.", meaning: "警察を呼んでください。" },
     { scene: "help", text: "Where is the restroom?", meaning: "トイレはどこですか？" },
     { scene: "help", text: "Thank you for your help.", meaning: "手伝ってくれてありがとう。" },
+
+    { scene: "idioms", text: "Break a leg!", meaning: "頑張って！（本番前の励まし）", note: "直訳：足を折れ" },
+    { scene: "idioms", text: "It's a piece of cake.", meaning: "とても簡単です。", note: "直訳：ケーキ一切れだ" },
+    { scene: "idioms", text: "I'm feeling under the weather.", meaning: "体調がすぐれません。", note: "直訳：天気の下にいる" },
+    { scene: "idioms", text: "Let's call it a day.", meaning: "今日はここまでにしましょう。", note: "直訳：これで一日と呼ぼう" },
+    { scene: "idioms", text: "It costs an arm and a leg.", meaning: "とても高いです。", note: "直訳：腕と脚の値段がする" },
+    { scene: "idioms", text: "I'm going to hit the sack.", meaning: "もう寝ます。", note: "直訳：寝袋をたたく" },
+    { scene: "idioms", text: "It happens once in a blue moon.", meaning: "めったに起こりません。", note: "直訳：青い月の時に一度起こる" },
+    { scene: "idioms", text: "Speak of the devil!", meaning: "うわさをすれば影。", note: "直訳：悪魔の話をすれば" },
+    { scene: "idioms", text: "Let's break the ice.", meaning: "場の緊張をほぐしましょう。", note: "直訳：氷を割ろう" },
+    { scene: "idioms", text: "I'm all ears.", meaning: "しっかり聞いていますよ。", note: "直訳：全身が耳だ" },
   ],
   ko: [
     { scene: "greet", text: "안녕하세요.", meaning: "こんにちは。" },
@@ -145,6 +158,17 @@ window.PHRASES = {
     { scene: "help", text: "경찰을 불러 주세요.", meaning: "警察を呼んでください。" },
     { scene: "help", text: "화장실이 어디예요?", meaning: "トイレはどこですか？" },
     { scene: "help", text: "도와주셔서 감사합니다.", meaning: "助けてくださってありがとうございます。" },
+
+    { scene: "idioms", text: "식은 죽 먹기예요.", meaning: "朝飯前です（とても簡単）。", note: "直訳：冷めたお粥を食べること" },
+    { scene: "idioms", text: "발이 넓어요.", meaning: "顔が広いです。", note: "直訳：足が広い" },
+    { scene: "idioms", text: "눈이 높아요.", meaning: "理想が高いです。", note: "直訳：目が高い" },
+    { scene: "idioms", text: "손이 커요.", meaning: "気前がいいです。", note: "直訳：手が大きい" },
+    { scene: "idioms", text: "귀가 얇아요.", meaning: "人の話に流されやすいです。", note: "直訳：耳が薄い" },
+    { scene: "idioms", text: "미역국을 먹었어요.", meaning: "試験に落ちました。", note: "直訳：わかめスープを食べた" },
+    { scene: "idioms", text: "그림의 떡이에요.", meaning: "絵に描いた餅です。", note: "直訳：絵の中の餅" },
+    { scene: "idioms", text: "티끌 모아 태산.", meaning: "ちりも積もれば山となる。", note: "直訳：ちりを集めて泰山" },
+    { scene: "idioms", text: "시작이 반이에요.", meaning: "始めれば半分終わったようなものです。", note: "直訳：始まりが半分" },
+    { scene: "idioms", text: "눈코 뜰 새 없어요.", meaning: "目が回るほど忙しいです。", note: "直訳：目も鼻も開ける暇がない" },
   ],
   ja: [
     { scene: "greet", text: "おはようございます。", meaning: "Good morning." },
@@ -209,5 +233,16 @@ window.PHRASES = {
     { scene: "help", text: "警察を呼んでください。", meaning: "Please call the police." },
     { scene: "help", text: "トイレはどこですか？", meaning: "Where is the restroom?" },
     { scene: "help", text: "助けてくれてありがとうございます。", meaning: "Thank you for helping me." },
+
+    { scene: "idioms", text: "猫の手も借りたい。", meaning: "I'm extremely busy.", note: "Literally: I'd even borrow a cat's paws." },
+    { scene: "idioms", text: "朝飯前です。", meaning: "It's a piece of cake.", note: "Literally: It's before breakfast." },
+    { scene: "idioms", text: "顔が広いです。", meaning: "They know a lot of people.", note: "Literally: Their face is wide." },
+    { scene: "idioms", text: "猿も木から落ちる。", meaning: "Even experts make mistakes.", note: "Literally: Even monkeys fall from trees." },
+    { scene: "idioms", text: "花より団子。", meaning: "Substance over style.", note: "Literally: Dumplings rather than flowers." },
+    { scene: "idioms", text: "石の上にも三年。", meaning: "Perseverance pays off.", note: "Literally: Three years even on a stone." },
+    { scene: "idioms", text: "口が軽いです。", meaning: "They can't keep a secret.", note: "Literally: Their mouth is light." },
+    { scene: "idioms", text: "気が合います。", meaning: "We get along well.", note: "Literally: Our spirits match." },
+    { scene: "idioms", text: "頭が上がりません。", meaning: "I owe them so much I can't argue.", note: "Literally: I can't raise my head." },
+    { scene: "idioms", text: "七転び八起き。", meaning: "Never give up.", note: "Literally: Fall seven times, get up eight." },
   ],
 };
