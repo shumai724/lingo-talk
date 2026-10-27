@@ -16,6 +16,7 @@ window.SCENES = [
   { id: "transport", emoji: "🚃", name: "電車・タクシー", desc: "乗り物を使うとき" },
   { id: "hotel", emoji: "🏨", name: "ホテル", desc: "チェックインや要望を伝えるとき" },
   { id: "help", emoji: "🆘", name: "困ったとき", desc: "聞き返す・助けを求めるとき" },
+  { id: "feelings", emoji: "😊", name: "気持ちを伝える", desc: "うれしい・楽しい・悲しい・怒っているなどの感情" },
   { id: "idioms", emoji: "💬", name: "慣用句", desc: "その国でよく使われる言い回し" },
 ];
 
@@ -83,6 +84,17 @@ window.PHRASES = {
     { scene: "help", text: "Please call the police.", meaning: "警察を呼んでください。" },
     { scene: "help", text: "Where is the restroom?", meaning: "トイレはどこですか？" },
     { scene: "help", text: "Thank you for your help.", meaning: "手伝ってくれてありがとう。" },
+
+    { scene: "feelings", text: "I'm so happy!", meaning: "とてもうれしいです！" },
+    { scene: "feelings", text: "This is so much fun!", meaning: "すごく楽しいです！" },
+    { scene: "feelings", text: "I had a great time.", meaning: "とても楽しかったです。" },
+    { scene: "feelings", text: "I'm really sad.", meaning: "本当に悲しいです。" },
+    { scene: "feelings", text: "I'm angry.", meaning: "怒っています。" },
+    { scene: "feelings", text: "That's so frustrating!", meaning: "本当にイライラします！" },
+    { scene: "feelings", text: "I'm surprised!", meaning: "驚きました！" },
+    { scene: "feelings", text: "I'm worried about it.", meaning: "それが心配です。" },
+    { scene: "feelings", text: "I'm so tired.", meaning: "とても疲れました。" },
+    { scene: "feelings", text: "I'm excited for tomorrow.", meaning: "明日が楽しみです。" },
 
     { scene: "idioms", text: "Break a leg!", meaning: "頑張って！（本番前の励まし）", note: "直訳：足を折れ" },
     { scene: "idioms", text: "It's a piece of cake.", meaning: "とても簡単です。", note: "直訳：ケーキ一切れだ" },
@@ -159,6 +171,17 @@ window.PHRASES = {
     { scene: "help", text: "화장실이 어디예요?", meaning: "トイレはどこですか？" },
     { scene: "help", text: "도와주셔서 감사합니다.", meaning: "助けてくださってありがとうございます。" },
 
+    { scene: "feelings", text: "정말 기뻐요!", meaning: "本当にうれしいです！" },
+    { scene: "feelings", text: "너무 재미있어요!", meaning: "とても楽しいです！" },
+    { scene: "feelings", text: "즐거운 시간이었어요.", meaning: "楽しい時間でした。" },
+    { scene: "feelings", text: "너무 슬퍼요.", meaning: "とても悲しいです。" },
+    { scene: "feelings", text: "화가 나요.", meaning: "腹が立ちます。" },
+    { scene: "feelings", text: "짜증 나요.", meaning: "イライラします。" },
+    { scene: "feelings", text: "깜짝 놀랐어요!", meaning: "びっくりしました！" },
+    { scene: "feelings", text: "걱정돼요.", meaning: "心配です。" },
+    { scene: "feelings", text: "너무 피곤해요.", meaning: "とても疲れました。" },
+    { scene: "feelings", text: "내일이 기대돼요.", meaning: "明日が楽しみです。" },
+
     { scene: "idioms", text: "식은 죽 먹기예요.", meaning: "朝飯前です（とても簡単）。", note: "直訳：冷めたお粥を食べること" },
     { scene: "idioms", text: "발이 넓어요.", meaning: "顔が広いです。", note: "直訳：足が広い" },
     { scene: "idioms", text: "눈이 높아요.", meaning: "理想が高いです。", note: "直訳：目が高い" },
@@ -233,6 +256,17 @@ window.PHRASES = {
     { scene: "help", text: "警察を呼んでください。", meaning: "Please call the police." },
     { scene: "help", text: "トイレはどこですか？", meaning: "Where is the restroom?" },
     { scene: "help", text: "助けてくれてありがとうございます。", meaning: "Thank you for helping me." },
+
+    { scene: "feelings", text: "とてもうれしいです！", meaning: "I'm so happy!" },
+    { scene: "feelings", text: "すごく楽しいです！", meaning: "This is so much fun!" },
+    { scene: "feelings", text: "楽しかったです。", meaning: "I had a great time." },
+    { scene: "feelings", text: "悲しいです。", meaning: "I'm sad." },
+    { scene: "feelings", text: "怒っています。", meaning: "I'm angry." },
+    { scene: "feelings", text: "イライラします。", meaning: "I'm frustrated." },
+    { scene: "feelings", text: "びっくりしました！", meaning: "I was surprised!" },
+    { scene: "feelings", text: "心配です。", meaning: "I'm worried." },
+    { scene: "feelings", text: "疲れました。", meaning: "I'm tired." },
+    { scene: "feelings", text: "明日が楽しみです。", meaning: "I'm looking forward to tomorrow." },
 
     { scene: "idioms", text: "猫の手も借りたい。", meaning: "I'm extremely busy.", note: "Literally: I'd even borrow a cat's paws." },
     { scene: "idioms", text: "朝飯前です。", meaning: "It's a piece of cake.", note: "Literally: It's before breakfast." },
